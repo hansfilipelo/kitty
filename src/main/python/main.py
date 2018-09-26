@@ -8,12 +8,6 @@ import os
 
 import kitty
 
-api_key = None
-try:
-    api_key = os.environ["CATAPI_KEY"]
-except KeyError as e:
-    print("Variable CATAPI_KEY not set. Proceeding without one.")
-
 def update(pixmap, label):
     img = kitty.fetchCat()
     pixmap.convertFromImage(img)
