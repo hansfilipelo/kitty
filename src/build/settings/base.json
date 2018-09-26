@@ -1,0 +1,5 @@
+{
+    "app_name": "KittY",
+    "main_module": "src/main/python/main.py",
+    "author": "Hans-Filip Elo"
+}
