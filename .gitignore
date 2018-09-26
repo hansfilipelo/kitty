@@ -1,0 +1,4 @@
+# Virtualenv
+.venv
+target
+*.pyc
