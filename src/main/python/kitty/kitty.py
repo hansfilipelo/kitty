@@ -2,12 +2,11 @@ import os
 import sys
 import time
 import platform
-import tempfile
 import requests
 from PyQt5.QtGui import QImage
 
 # Fetch link
-def fetchCat():
+def fetchCat(qimage, errorMsg):
     #urlString = "http://thecatapi.com/api/images/get?"
     #urlString += "format=xml"
     #urlString += "&results_per_page=10"
@@ -21,16 +20,14 @@ def fetchCat():
         content = requests.get(urlString).content
     except Exception as e:
         print("ERROR: The API on URL " + urlString + " is not answering!")
-        print(e.message)
-        return QImage()
+        print(e)
+        errorMsg = e
+        return False
 
     try:
-        f, fname = tempfile.mkstemp()
-        os.write(f, content)
-        os.close(f)
-        img = QImage(fname)
-        os.remove(fname)
-        return img
+        qimage.loadFromData(content)
+        return True
     except Exception as e:
-        print(e.message)
-        return QImage()
+        print(e)
+        errorMsg = e
+    return False

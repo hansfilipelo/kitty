@@ -1,7 +1,7 @@
 from fbs_runtime.application_context import ApplicationContext, cached_property
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QImage
 import sys
 # import os
 
@@ -10,9 +10,16 @@ import sys
 import kitty.kitty as kitty
 
 def update(pixmap, label):
-    img = kitty.fetchCat()
-    pixmap.convertFromImage(img)
-    label.setPixmap(pixmap)
+    qimage = QImage()
+    errorMsg = ""
+    if kitty.fetchCat(qimage, errorMsg):
+        pixmap.convertFromImage(qimage)
+        label.setPixmap(pixmap)
+    else :
+        if (errorMsg):
+            label.setText("Failed: " + errorMsg)
+        else :
+            label.setText("Failed to fetch image!")
 
 class AppContext(ApplicationContext):
     def run(self):
@@ -30,13 +37,17 @@ class MainWindow(QWidget):
         label = QLabel()
         label.setWordWrap(True)
         pixmap = QPixmap()
+
         button = QPushButton('I wan\'t more!')
         button.clicked.connect(lambda: update(pixmap, label))
+
         layout = QVBoxLayout()
         layout.addWidget(label)
         layout.addWidget(button)
         layout.setAlignment(button, Qt.AlignHCenter)
+        layout.setAlignment(label, Qt.AlignHCenter)
         self.setLayout(layout)
+
         update(pixmap, label)
     def closeEvent(self, event):
         sys.exit(0)
