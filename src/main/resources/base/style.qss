@@ -6,10 +6,6 @@ QLabel {
     text-align: center;
 }
 
-QWidget{
-
-}
-
 QPushButton {
     max-width: 10em;
 }

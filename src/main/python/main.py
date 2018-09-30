@@ -1,7 +1,7 @@
 from fbs_runtime.application_context import ApplicationContext, cached_property
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout
-from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout
+from PyQt5.QtGui import QPixmap, QImage, QKeyEvent
 import sys
 # import os
 
@@ -9,17 +9,24 @@ import sys
 
 import kitty.kitty as kitty
 
-def update(pixmap, label):
+def update(pixmap, label, widget):
     qimage = QImage()
     errorMsg = ""
     if kitty.fetchCat(qimage, errorMsg):
         pixmap.convertFromImage(qimage)
         label.setPixmap(pixmap)
+        widget.resize(pixmap.width(), pixmap.height())
     else :
         if (errorMsg):
             label.setText("Failed: " + errorMsg)
         else :
             label.setText("Failed to fetch image!")
+
+def updateKeyboard(pixmap, label, widget, event):
+    if event.key() != Qt.Key_Escape :
+        update(pixmap, label, widget)
+    else :
+        sys.exit(0)
 
 class AppContext(ApplicationContext):
     def run(self):
@@ -38,17 +45,15 @@ class MainWindow(QWidget):
         label.setWordWrap(True)
         pixmap = QPixmap()
 
-        button = QPushButton('I wan\'t more!')
-        button.clicked.connect(lambda: update(pixmap, label))
-
         layout = QVBoxLayout()
         layout.addWidget(label)
-        layout.addWidget(button)
-        layout.setAlignment(button, Qt.AlignHCenter)
         layout.setAlignment(label, Qt.AlignHCenter)
         self.setLayout(layout)
+        self.mousePressEvent=lambda event : update(pixmap, label, self)
+        self.keyPressEvent=lambda event : updateKeyboard(pixmap, label, self, event)
 
-        update(pixmap, label)
+        update(pixmap, label, self)
+
     def closeEvent(self, event):
         sys.exit(0)
 
