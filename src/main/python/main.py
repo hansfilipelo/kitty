@@ -39,7 +39,7 @@ class MainWindow(QWidget):
         self.setLayout(layout)
         update(pixmap, label)
     def closeEvent(self, event):
-        exit()
+        sys.exit(0)
 
 if __name__ == '__main__':
     appctxt = AppContext()
