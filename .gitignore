@@ -2,3 +2,6 @@
 .venv
 target
 *.pyc
+.pyc
+__pycache__
+*__pycache__*
