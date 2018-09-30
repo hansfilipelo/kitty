@@ -3,10 +3,11 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QVBoxLayout
 from PyQt5.QtGui import QPixmap
 import sys
-import os
+# import os
+
 #sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
-import kitty
+import kitty.kitty as kitty
 
 def update(pixmap, label):
     img = kitty.fetchCat()
