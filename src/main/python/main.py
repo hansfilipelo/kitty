@@ -21,6 +21,8 @@ class AppContext(ApplicationContext):
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setWindowFlags(Qt.FramelessWindowHint)
         self._kitty = kitty.Kitty(self)
         self._kitty.start()
         self._kitty.update()

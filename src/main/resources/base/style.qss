@@ -4,11 +4,11 @@ QLabel {
     min-height: 21em;
     font-style: bold;
     text-align: center;
-    background-color: rgba(255, 255, 255, 10);
+    background: transparent;
 }
 
 QWidget {
-  background-color: rgba(255, 255, 255, 10);
+  background: transparent;
 }
 
 QPushButton {
